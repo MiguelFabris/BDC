@@ -1,13 +1,27 @@
-import { Image, StyleSheet, View, Text} from "react-native";
+import { Image, StyleSheet, View } from "react-native";
+import { StandartButton } from "../components/StandartButton";
+import { Footer } from "../components/Footer";
+import { router } from "expo-router";
 
 export default function Index(){
     return(
         <View style={styles.container}>
-            <Text style={styles.title}>Welcome to the App!</Text>
             <Image 
-                source={{uri: 'https://example.com/welcome-image.png'}} 
+                source={require('../assets/logo.png')} 
                 style={styles.image} 
             />
+            <StandartButton 
+                onPress={() => router.navigate('login')}
+                title="ENTRAR" 
+                color={'#ffde00'} 
+            />
+            <StandartButton 
+                onPress={() => router.navigate('register')}
+                title="CADASTRE-SE" 
+                color={'#ffde00'} 
+            />
+
+            <Footer />
         </View>
     );
 }
@@ -18,7 +32,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         padding: 20,
-        backgroundColor: '#f5f5f5',
+        backgroundColor: '#3c95fe',
+        gap: 35,
     },
     title: {
         fontSize: 24,
@@ -26,9 +41,9 @@ const styles = StyleSheet.create({
         marginBottom: 20,
     },
     image: {
-        width: 200,
-        height: 200,
-        marginBottom: 20,
+        width: 450,
+        height: 450,
+        marginLeft: -20,
     },
     description: {
         fontSize: 16,
