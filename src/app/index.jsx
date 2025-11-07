@@ -20,7 +20,6 @@ export default function Index(){
                 title="CADASTRE-SE" 
                 color={'#ffde00'} 
             />
-
             <Footer />
         </View>
     );
