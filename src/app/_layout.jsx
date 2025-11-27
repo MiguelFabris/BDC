@@ -58,6 +58,35 @@ export default function Layout() {
                 ),
             }}
         />
+        <Tabs.Screen
+            name='ong/index'
+            options={{
+                title: 'ONGS Gerais',
+                tabBarLabel: "ONG'S",
+                tabBarStyle: { backgroundColor: '#0344a3' },
+                tabBarIcon: ({ color, size }) => (
+                    <Ionicons name="earth-outline" color={color} size={size} />
+                ),
+            }}
+        />
+        <Tabs.Screen
+            name='profile/index'
+            options={{
+                title: 'Perfil',
+                tabBarLabel: 'Perfil',
+                tabBarStyle: { backgroundColor: '#0344a3' },
+                tabBarIcon: ({ color, size }) => (
+                    <Ionicons name="person" color={color} size={size} />
+                ),
+            }}
+        />
+        <Tabs.Screen
+            name='terms/index'
+            options={{
+                tabBarButton: () => null,
+                tabBarItemStyle: { display: 'none' },
+            }}
+        />
 
 
         <Tabs.Screen

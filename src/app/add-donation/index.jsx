@@ -2,6 +2,7 @@ import { router } from "expo-router";
 import { useState } from "react";
 import { Keyboard, KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSheet, Text, TextInput, TouchableWithoutFeedback, View } from "react-native";
 import useDonationContext from "../../components/context/useDonationContext";
+import { formatPhoneNumber, unformatPhoneNumber } from "../../utilitaries/phoneMask";
 
 export default function AddDonation(){
 
@@ -15,27 +16,34 @@ export default function AddDonation(){
         if(!title || !description){ 
             return
         }
-        addDonations({ title, donorName, description, phone })
+        addDonations({ title, donorName, description, phone: unformatPhoneNumber(phone) })
         setTitle('')
         setDonorName('')
         setDescription('')
         setPhone('')
-        router.navigate('/donation')
+        router.navigate('donation')
+    }
+
+    const handlePhoneChange = (value) => {
+        const formatted = formatPhoneNumber(value)
+        setPhone(formatted)
     }
 
     return(
         <KeyboardAvoidingView 
             style={styles.container}
-            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+            behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+            keyboardVerticalOffset={Platform.OS === 'ios' ? 40 : 0}
         >
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-                <ScrollView contentContainerStyle={styles.inner} keyboardShouldPersistTaps="handled">
-                    <Text style={styles.text}>
-                        Adicionar tarefa:
-                    </Text>
-                    <Text style={styles.label}>
-                        Título da doação
-                    </Text>
+                <ScrollView contentContainerStyle={styles.scrollContent} keyboardShouldPersistTaps="handled">
+                    <Text style={styles.titulo}>
+                            Adicionar Nova Doação
+                        </Text>
+                    <View style={styles.inner}>
+                        <Text style={styles.label}>
+                            Título da doação
+                        </Text>
                     <TextInput 
                         style={styles.input}
                         value={title}
@@ -71,16 +79,19 @@ export default function AddDonation(){
                     <TextInput 
                         style={styles.input}
                         value={phone}
-                        onChangeText={setPhone}
+                        onChangeText={handlePhoneChange}
                         placeholder="(xx) xxxxx-xxxx"
                         keyboardType="phone-pad"
+                        maxLength={15}
                     />
                     <View style={styles.action}>
+                        <Text style={styles.link} onPress={() => router.navigate('donation')}>Voltar</Text>
                         <Pressable style={styles.button} onPress={submitDonation}>
                             <Text>
                                 Salvar
                             </Text>
                         </Pressable>
+                    </View>
                     </View>
                 </ScrollView>
             </TouchableWithoutFeedback>
@@ -91,17 +102,16 @@ export default function AddDonation(){
 const styles = StyleSheet.create({
     container:{
         flex: 1,
-        backgroundColor: '#021123',
-        alignItems: 'center',
-        gap: 24,
+        backgroundColor: '#3c95fe',
     },
-    text:{
-        color: '#fff',
-        fontSize: 26,
-        textAlign: 'center',
+    scrollContent:{
+        flexGrow: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingVertical: 20,
     },
     inner:{
-        backgroundColor: '#98a0a8',
+        backgroundColor: '#0768d7ff',
         borderRadius: 8,
         width: '90%',
         padding: 16,
@@ -125,7 +135,27 @@ const styles = StyleSheet.create({
     },
     button:{
         flexDirection: 'row',
+        backgroundColor: '#ffde00',
         alignItems: 'center',
+        justifyContent: 'center',
+        padding: 12,
+        width: 100,
+        borderRadius: 20,
         gap: 4,
-    }
+    },
+    link:{
+        color: '#fff',
+        textDecorationLine: 'underline',
+        marginRight: 'auto',
+        alignSelf: 'center',
+    },
+    titulo:{
+        fontSize: 32,
+        fontWeight: 'bold',
+        marginBottom: 24,
+        marginLeft: 'auto',
+        marginRight: 'auto',
+        alignSelf: 'center',
+        color: '#fff',
+    },
 })

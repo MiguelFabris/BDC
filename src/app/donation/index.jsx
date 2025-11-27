@@ -27,49 +27,43 @@ export default function Donation(){
         <View style={{ flex: 1 }}>
             <TopBar/>
             <View style={styles.containerGeral}>
-                <View style={styles.container}>
-                    <View style={styles.wrapper}>
-                        <View style={styles.inner}>
-                            <View style={styles.searchWrapper}>
-                                <TextInput
-                                    placeholder="Pesquisar doações..."
-                                    placeholderTextColor="#666"
-                                    value={query}
-                                    onChangeText={setQuery}
-                                    style={styles.searchInput}
-                                />
-                            </View>
-
-                            <FlatList
-                                data={filteredDonations}
-                                renderItem={({item}) => 
-                                    <DonationItem 
-                                        donation={item}
-                                        onPressDelete={() => deleteDonation(item.id)}
-                                        onPressEdit={() => router.navigate(`/edit-donation/${item.id}`)}
-                                />}
-                                keyExtractor={item => item.id}
-                                ItemSeparatorComponent={() => <View style={{height: 8}} />}
-                                contentContainerStyle={{ paddingBottom: 80 }}
-                                ListHeaderComponent={() => 
-                                    <View>
-                                        <Text style={styles.text}>
-                                            Doações Gerais
-                                        </Text>
-                                        <View style={{marginTop: 12, marginBottom: 16, alignItems: 'center'}}>  
-                                            <StandartButton 
-                                                title={'ADICIONAR NOVA DOAÇÃO' }
-                                                color={'#ffde00'}
-                                                tamanho={350}
-                                                icon={<Ionicons name="add-circle-outline" size={30} color="#fff" />}
-                                                onPress={() => {router.navigate('/add-donation')}}
-                                            />
-                                        </View>
-                                    </View>
-                                }
-                            />
-                        </View>
+                <View style={styles.fixedHeader}>
+                    <Text style={styles.text}>
+                        DOAÇÕES GERAIS
+                    </Text>
+                    <View style={styles.searchWrapper}>
+                        <TextInput
+                            placeholder="Pesquisar doações..."
+                            placeholderTextColor="#666"
+                            value={query}
+                            onChangeText={setQuery}
+                            style={styles.searchInput}
+                        />
                     </View>
+                    <View style={{marginVertical: 12, alignItems: 'center'}}>  
+                        <StandartButton 
+                            title={'ADICIONAR NOVA DOAÇÃO' }
+                            color={'#ffde00'}
+                            tamanho={350}
+                            icon={<Ionicons name="add-circle-outline" size={30} color="#fff" />}
+                            onPress={() => {router.navigate('/add-donation')}}
+                        />
+                    </View>
+                </View>
+                <View style={styles.listContainer}>
+                    <FlatList
+                        data={filteredDonations}
+                        renderItem={({item}) => 
+                            <DonationItem 
+                                donation={item}
+                                onPressDelete={() => deleteDonation(item.id)}
+                                onPressEdit={() => router.navigate(`/edit-donation/${item.id}`)}
+                        />}
+                        keyExtractor={item => item.id}
+                        ItemSeparatorComponent={() => <View style={{height: 8}} />}
+                        contentContainerStyle={{ paddingBottom: 220, flexGrow: 1 }}
+                        style={{ flex: 1 }}
+                    />
                 </View>
             </View>
         </View>
@@ -84,13 +78,20 @@ const styles = StyleSheet.create({
     },
     container:{
         flex: 1,
-        alignItems: 'center',
-      
+        width: '100%',
     },
-    wrapper:{
+    fixedHeader: {
+        backgroundColor: '#3c95fe',
+        paddingHorizontal: '5%',
+        paddingTop: 16,
+        paddingBottom: 12,
+        width: '100%',
+    },
+    listContainer: {
         flex: 1,
-        width: '90%',
-        paddingVertical: 40
+        width: '100%',
+        paddingHorizontal: '5%',
+        minHeight: 0,
     },
     text:{
         textAlign: 'center',
@@ -99,18 +100,13 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         marginBottom: 16,
     },
-    inner:{
-        flex: 1,
-    }
-    ,
     searchWrapper:{
-        width: '95%',
+        width: '100%',
         alignItems: 'center',
         marginBottom: 12,
-        marginLeft: 8
     },
     searchInput:{
-        width: '100%',
+        width: '95%',
         backgroundColor: '#fff',
         paddingHorizontal: 12,
         paddingVertical: 10,

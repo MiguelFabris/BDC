@@ -12,9 +12,9 @@ export default function Login(){
             />
             <Text style={styles.title}>ENTRAR</Text>
             <View style={styles.containerInfo}>
-                <Text style={styles.label}>USUÁRIO:</Text>
+                <Text style={styles.label}>E-MAIL:</Text>
                 <TextInput 
-                    placeholder="Insira aqui seu usuário" 
+                    placeholder="Insira aqui seu e-mail" 
                     placeholderTextColor={'#ccc'}
                     style={styles.input} 
                 />

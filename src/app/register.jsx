@@ -1,10 +1,31 @@
-import { Image, StyleSheet, View, TextInput, Text } from "react-native";
+import { Ionicons } from '@expo/vector-icons';
+import { router } from "expo-router";
+import { useState } from 'react';
+import { Image, Pressable, StyleSheet, Text, TextInput, View } from "react-native";
+import Icon from 'react-native-vector-icons/Ionicons';
 import { StandartButton } from "../components/StandartButton";
-import { Link, router } from "expo-router";
+
+
 
 export default function Login(){
+
+        const [checked, setChecked] = useState(false);
+
+        const toggleCheckbox = () => {
+            const newValue = !checked;
+            setChecked(newValue);
+        };
+
     return(
+        
         <View style={styles.container}>
+            <Pressable onPress={() => router.back()} style={styles.backButton}>
+                <Ionicons
+                    name="chevron-back"
+                    size={32}
+                    color="#fff"
+                />
+            </Pressable>
             <Image 
                 source={require('../assets/logoSemNome.png')} 
                 style={styles.image} 
@@ -48,7 +69,19 @@ export default function Login(){
                 tamanho={250}
                 color={'#ffde00'} 
             />
-            <Text style={styles.link} onPress={() => router.back()}>Voltar</Text>
+            <View style={styles.checkboxContainer}>
+                <Pressable 
+                    style={[styles.box, checked && styles.boxChecked]}
+                    onPress={toggleCheckbox}
+                >
+                    {checked && (
+                        <Icon name="checkmark" size={16} color="#FFF" /> 
+                    )}
+                </Pressable>
+                <Pressable onPress={() => router.navigate('terms')}>
+                    <Text style={styles.labelCheck}>Concordo com os termos de uso</Text>
+                </Pressable>
+            </View>
         </View>
     )
 }
@@ -99,5 +132,36 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         fontSize: 16,
         paddingLeft: 20,
+    },
+    backButton: {
+        position: 'absolute',
+        top: 40,
+        left: 20,
+        padding: 8,
+        borderRadius: 20,
+    },
+    checkboxContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginTop: 16,
+        gap: 8,
+    },
+    box: {
+        height: 20,
+        width: 20,
+        borderWidth: 2,
+        borderColor: '#fff',
+        borderRadius: 4,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    boxChecked: {
+        backgroundColor: '#007AFF',
+        borderColor: '#007AFF',
+    },
+    labelCheck: {
+        fontSize: 12,
+        color: '#fff',
+        fontWeight: '500',
     },
 });

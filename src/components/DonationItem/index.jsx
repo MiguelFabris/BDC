@@ -1,9 +1,9 @@
 import { Ionicons } from '@expo/vector-icons';
 import { Pressable, StyleSheet, Text, View } from "react-native";
+import { formatPhoneNumber } from '../../utilitaries/phoneMask';
 
 export function DonationItem({ 
             donation,
-            onPressEdit,
             completed,
             onPressDelete
         }){
@@ -19,16 +19,11 @@ export function DonationItem({
                 <Text style={styles.title}>{donation?.title}</Text>
                 <Text style={styles.sub}>{donation?.donorName}</Text>
                 <Text style={styles.text}>{donation?.description}</Text>
-                <Text style={styles.phone}>{donation?.phone}</Text>
+                <Text style={styles.phone}>{formatPhoneNumber(donation?.phone || '')}</Text>
             </View>
-            <Pressable onPress={onPressEdit} style={styles.iconButton}>
-                <Ionicons
-                    name="pencil" 
-                />
-            </Pressable>
             <Pressable onPress={onPressDelete} style={styles.iconButton}>
                 <Ionicons
-                    name="trash" 
+                    name="trash" style={styles.icon}
                 />
             </Pressable>
 
@@ -39,7 +34,9 @@ export function DonationItem({
 const styles = StyleSheet.create({
     card:{
         flexDirection: 'row',
-        backgroundColor: '#98a0a8',
+        backgroundColor: '#ffffffff',
+        borderWidth: 3,
+        borderColor: '#9bff70',
         alignItems: 'center',
         justifyContent: 'space-between',
         paddingHorizontal: 8,
@@ -50,8 +47,8 @@ const styles = StyleSheet.create({
     text:{
         flex: 1,
         color: '#021123',
-        fontSize: 18,
-        fontWeight: 'bold'
+        fontSize: 12,
+        textAlign: 'center'
     }
     ,
     title:{
@@ -62,14 +59,20 @@ const styles = StyleSheet.create({
     sub:{
         color: '#021123',
         fontSize: 14,
-        fontWeight: '600'
+        fontWeight: 'bold',
+        marginLeft: 10
     },
     phone:{
         color: '#021123',
-        fontSize: 14,
+        fontSize: 12,
+        textAlign: 'right'
     },
     iconButton:{
         paddingHorizontal: 8,
         paddingVertical: 4,
-    }
+    },
+    icon:{
+        fontSize: 20,
+        color: '#021123'
+    },
 })
