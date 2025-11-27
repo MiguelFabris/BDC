@@ -4,7 +4,7 @@ import { TopBar } from "../../components/TopBar";
 export default function Home() {
     return(
         <View style={{ flex: 1 }}>
-            <TopBar title="Home"/>
+            <TopBar />
         <View style={styles.container}>
             <Text>Welcome to the Home Screen!</Text>
         </View>

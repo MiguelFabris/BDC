@@ -1,4 +1,5 @@
-import { Image, StyleSheet, View, TextInput, Text } from "react-native";
+import { router } from "expo-router";
+import { Image, StyleSheet, Text, TextInput, View } from "react-native";
 import { StandartButton } from "../components/StandartButton";
 
 export default function Login(){
@@ -27,8 +28,9 @@ export default function Login(){
                 />
             </View>
             <StandartButton 
-                onPress={() => router.navigate('/home/index')}
-                title="ENTRAR" 
+                onPress={() => router.navigate('home')}
+                title="ENTRAR"
+                tamanho={250} 
                 color={'#ffde00'} 
             />
             <Text style={styles.link} onPress={() => router.back()}>Voltar</Text>

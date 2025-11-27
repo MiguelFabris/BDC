@@ -1,8 +1,10 @@
-import { Tabs, router } from 'expo-router';
+import { Tabs } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
+import { DonationProvider } from '../components/context/DonationProvider';
 
 export default function Layout() {
     return(
+    <DonationProvider>
         <Tabs
             screenOptions={{
                 headerShown: false,
@@ -12,6 +14,13 @@ export default function Layout() {
                     display: 'none',
                 },
             }}>
+        <Tabs.Screen
+            name='index'
+            options={{
+                tabBarButton: () => null,
+                tabBarItemStyle: { display: 'none' },
+            }}
+        />
         <Tabs.Screen
             name='home/index'
             options={{
@@ -37,13 +46,28 @@ export default function Layout() {
                 tabBarItemStyle: { display: 'none' },
             }}
         />
+
         <Tabs.Screen
-            name='index'
+            name='donation/index'
+            options={{
+                title: 'Doações Gerais',
+                tabBarLabel: 'Doações',
+                tabBarStyle: { backgroundColor: '#0344a3' },
+                tabBarIcon: ({ color, size }) => (
+                    <Ionicons name="gift" color={color} size={size} />
+                ),
+            }}
+        />
+
+
+        <Tabs.Screen
+            name='add-donation/index'
             options={{
                 tabBarButton: () => null,
                 tabBarItemStyle: { display: 'none' },
             }}
         />
         </Tabs>
+    </DonationProvider>
     )
 }

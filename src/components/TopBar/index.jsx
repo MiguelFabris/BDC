@@ -1,9 +1,8 @@
-import { View, Text, StyleSheet } from "react-native";
+import { View, StyleSheet } from "react-native";
 
-export function TopBar({ title }) {
+export function TopBar() {
     return(
         <View style={styles.container}>
-            <Text style={styles.title}>{title}</Text>
         </View>
     )
 }
@@ -11,10 +10,10 @@ export function TopBar({ title }) {
 const styles = StyleSheet.create({
     container: {
         width: '100%',
-        height: 60,
+        height: 80,
         backgroundColor: '#0344a3',
         justifyContent: 'center',
-        alignItems: 'left',
+        alignItems: 'center',
         paddingTop: 15,
         paddingBottom: 15,
         shadowColor: '#000',
@@ -27,6 +26,13 @@ const styles = StyleSheet.create({
         color: '#fff',
         fontSize: 20,
         fontWeight: 'bold',
-        marginLeft: 20
     },
+    icon:{
+        color: '#fff',
+        fontSize: 24,
+        marginLeft: 20,
+        position: 'absolute',
+        left: 10,
+        top: 38
+    }
 });

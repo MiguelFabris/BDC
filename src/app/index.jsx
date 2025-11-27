@@ -13,11 +13,13 @@ export default function Index(){
             <StandartButton 
                 onPress={() => router.navigate('login')}
                 title="ENTRAR" 
+                tamanho={250}
                 color={'#ffde00'} 
             />
             <StandartButton 
                 onPress={() => router.navigate('register')}
                 title="CADASTRE-SE" 
+                tamanho={250}
                 color={'#ffde00'} 
             />
             <Footer />

@@ -44,7 +44,8 @@ export default function Login(){
             </View>
             <StandartButton 
                 onPress={() => router.navigate('login')}
-                title="REGISTRAR" 
+                title="REGISTRAR"
+                tamanho={250}
                 color={'#ffde00'} 
             />
             <Text style={styles.link} onPress={() => router.back()}>Voltar</Text>
