@@ -1,27 +1,27 @@
 import { router } from "expo-router";
 import { Image, StyleSheet, Text, TextInput, View } from "react-native";
-import { StandartButton } from "../components/StandartButton";
+import { StandartButton } from "../../components/StandartButton";
 import { Ionicons } from '@expo/vector-icons';
 
-export default function Login(){
+export default function ForgotPassword(){
 
     return(
         <View style={styles.container}>
             <Image 
-                source={require('../assets/logoSemNome.png')} 
+                source={require('../../assets/logoSemNome.png')} 
                 style={styles.image} 
             />
-            <Text style={styles.title}>ENTRAR</Text>
+            <Text style={styles.title}>REDEFINIR SENHA</Text>
             <View style={styles.containerInfo}>
-                <Text style={styles.label}>E-MAIL:</Text>
+                <Text style={styles.label}>NOVA SENHA:</Text>
                 <TextInput 
-                    placeholder="Insira aqui seu e-mail" 
+                    placeholder="Insira aqui sua nova senha" 
                     placeholderTextColor={'#ccc'}
                     style={styles.input} 
                 />
-                <Text style={styles.label}>SENHA:</Text>
+                <Text style={styles.label}>REPITA A SENHA:</Text>
                 <TextInput 
-                    placeholder="Insira aqui sua senha" 
+                    placeholder="Repita aqui sua nova senha" 
                     placeholderTextColor={'#ccc'}
                     secureTextEntry={true} 
                     style={styles.input} 
@@ -29,12 +29,12 @@ export default function Login(){
                 />
             </View>
             <StandartButton 
-                onPress={() => router.navigate('home')}
-                title="ENTRAR"
+                onPress={() => router.navigate('login')}
+                title="SALVAR"
                 tamanho={250} 
                 color={'#ffde00'} 
             />
-            <Text style={styles.link} onPress={() => router.navigate('forgot-password')}>Esqueceu sua senha?</Text>
+            <Text style={styles.link} onPress={() => router.back()}>Voltar</Text>
         </View>
     )
 }

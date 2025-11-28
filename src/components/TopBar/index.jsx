@@ -39,5 +39,6 @@ const styles = StyleSheet.create({
     backButton: {
         padding: 8,
         borderRadius: 20,
+        backgroundColor: 'rgba(255, 255, 255, 0.07)'
     },
 });

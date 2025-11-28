@@ -1,11 +1,13 @@
-import { Tabs } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
+import { Tabs } from 'expo-router';
 import { DonationProvider } from '../components/context/DonationProvider';
+import { OngProvider } from '../components/context/OngProvider';
 
 export default function Layout() {
     return(
     <DonationProvider>
-        <Tabs
+        <OngProvider>
+            <Tabs
             screenOptions={{
                 headerShown: false,
                 tabBarActiveTintColor: '#ffde00',
@@ -87,7 +89,13 @@ export default function Layout() {
                 tabBarItemStyle: { display: 'none' },
             }}
         />
-
+        <Tabs.Screen
+            name='forgot-password/index'
+            options={{
+                tabBarButton: () => null,
+                tabBarItemStyle: { display: 'none' },
+            }}
+        />
 
         <Tabs.Screen
             name='add-donation/index'
@@ -96,7 +104,15 @@ export default function Layout() {
                 tabBarItemStyle: { display: 'none' },
             }}
         />
+        <Tabs.Screen
+            name='add-ong/index'
+            options={{
+                tabBarButton: () => null,
+                tabBarItemStyle: { display: 'none' },
+            }}
+        />
         </Tabs>
+        </OngProvider>
     </DonationProvider>
     )
 }

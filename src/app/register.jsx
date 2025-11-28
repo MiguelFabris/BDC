@@ -2,6 +2,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { router } from "expo-router";
 import { useState } from 'react';
 import { Image, Pressable, StyleSheet, Text, TextInput, View } from "react-native";
+import useUserContext from "../components/context/useUserContext";
 import Icon from 'react-native-vector-icons/Ionicons';
 import { StandartButton } from "../components/StandartButton";
 
@@ -143,12 +144,11 @@ const styles = StyleSheet.create({
     checkboxContainer: {
         flexDirection: 'row',
         alignItems: 'center',
-        marginTop: 16,
         gap: 8,
     },
     box: {
-        height: 20,
-        width: 20,
+        height: 15,
+        width: 15,
         borderWidth: 2,
         borderColor: '#fff',
         borderRadius: 4,
@@ -156,12 +156,12 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     boxChecked: {
-        backgroundColor: '#007AFF',
-        borderColor: '#007AFF',
+        backgroundColor: '#9bff70',
+        borderColor: '#9bff70',
     },
     labelCheck: {
         fontSize: 12,
         color: '#fff',
-        fontWeight: '500',
+        textDecorationLine: 'underline',
     },
 });
