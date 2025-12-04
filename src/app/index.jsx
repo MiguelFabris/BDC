@@ -1,9 +1,12 @@
-import { Image, StyleSheet, View } from "react-native";
-import { StandartButton } from "../components/StandartButton";
-import { Footer } from "../components/Footer";
 import { router } from "expo-router";
+import { Image, StyleSheet, View } from "react-native";
+
+import { Footer } from "../components/Footer";
+import { StandartButton } from "../components/StandartButton";
 
 export default function Index(){
+
+    
     return(
         <View style={styles.container}>
             <Image 

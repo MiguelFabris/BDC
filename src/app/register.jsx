@@ -2,13 +2,18 @@ import { Ionicons } from '@expo/vector-icons';
 import { router } from "expo-router";
 import { useState } from 'react';
 import { Image, Pressable, StyleSheet, Text, TextInput, View } from "react-native";
-import useUserContext from "../components/context/useUserContext";
-import Icon from 'react-native-vector-icons/Ionicons';
 import { StandartButton } from "../components/StandartButton";
+import useUserContext from '../components/context/useUserContext';
 
 
+export default function Register(){
 
-export default function Login(){
+    const { addRegister } = useUserContext();
+    
+    const [user, setUser] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
 
         const [checked, setChecked] = useState(false);
 
@@ -16,6 +21,21 @@ export default function Login(){
             const newValue = !checked;
             setChecked(newValue);
         };
+        const submitRegister = () => {
+                if(!user || !password || !email || !confirmPassword){ 
+                   alert('Por favor, preencha todos os campos.');
+                   return;
+                }
+                if(password !== confirmPassword){
+                    alert('As senhas não coincidem. Por favor, tente novamente.');
+                    return;
+                }
+                addRegister({ user, email, password })
+                setUser('')
+                setEmail('')
+                setPassword('')
+                router.navigate('login')
+            }
 
     return(
         
@@ -38,13 +58,17 @@ export default function Login(){
                     placeholder="Insira aqui seu usuário" 
                     placeholderTextColor={'#ccc'}
                     style={styles.input} 
+                    value={user}
+                    onChangeText={setUser}
                 />
                 <Text style={styles.label}>E-MAIL:</Text>
                 <TextInput 
                     placeholder="Insira aqui seu melhor e-mail" 
                     placeholderTextColor={'#ccc'}
                     secureTextEntry={true} 
-                    style={styles.input} 
+                    style={styles.input}
+                    value={email} 
+                    onChangeText={setEmail}
                     
                 />
                 <Text style={styles.label}>SENHA:</Text>
@@ -52,7 +76,9 @@ export default function Login(){
                     placeholder="Insira aqui sua senha" 
                     placeholderTextColor={'#ccc'}
                     secureTextEntry={true} 
-                    style={styles.input} 
+                    style={styles.input}
+                    value={password} 
+                    onChangeText={setPassword}
                     
                 />
                 <Text style={styles.label}>CONFIRME SUA SENHA:</Text>
@@ -61,11 +87,12 @@ export default function Login(){
                     placeholderTextColor={'#ccc'}
                     secureTextEntry={true} 
                     style={styles.input} 
-                    
+                    value={confirmPassword}
+                    onChangeText={setConfirmPassword}
                 />
             </View>
             <StandartButton 
-                onPress={() => router.navigate('login')}
+                onPress={submitRegister}
                 title="REGISTRAR"
                 tamanho={250}
                 color={'#ffde00'} 
