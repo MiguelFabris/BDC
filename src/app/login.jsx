@@ -1,12 +1,37 @@
-import { router } from "expo-router";
-import { Image, StyleSheet, Text, TextInput, View } from "react-native";
-import { StandartButton } from "../components/StandartButton";
 import { Ionicons } from '@expo/vector-icons';
+import { router } from "expo-router";
+import { useState } from 'react';
+import { Image, Pressable, StyleSheet, Text, TextInput, View } from "react-native";
+import useUserContext from '../components/context/useUserContext';
+import { StandartButton } from "../components/StandartButton";
 
 export default function Login(){
 
+    const { loginUser } = useUserContext();
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+
+    const submitLogin = () => {
+        if(!email || !password){
+            alert('Preencha e-mail e senha.');
+            return;
+        }
+
+        const result = loginUser(email, password);
+        if(!result || !result.success){
+            alert(result?.message || 'Erro ao realizar login.');
+            return;
+        }
+
+        alert(result.message);
+        router.replace('home');
+    }
+
     return(
         <View style={styles.container}>
+            <Pressable onPress={() => router.back()} style={{ position: 'absolute', top: 40, left: 20, padding: 8 }}>
+                <Ionicons name="chevron-back" size={32} color="#fff" />
+            </Pressable>
             <Image 
                 source={require('../assets/logoSemNome.png')} 
                 style={styles.image} 
@@ -18,6 +43,10 @@ export default function Login(){
                     placeholder="Insira aqui seu e-mail" 
                     placeholderTextColor={'#ccc'}
                     style={styles.input} 
+                    keyboardType={'email-address'}
+                    autoCapitalize={'none'}
+                    value={email}
+                    onChangeText={setEmail}
                 />
                 <Text style={styles.label}>SENHA:</Text>
                 <TextInput 
@@ -25,11 +54,12 @@ export default function Login(){
                     placeholderTextColor={'#ccc'}
                     secureTextEntry={true} 
                     style={styles.input} 
-                    
+                    value={password}
+                    onChangeText={setPassword}
                 />
             </View>
             <StandartButton 
-                onPress={() => router.navigate('home')}
+                onPress={submitLogin}
                 title="ENTRAR"
                 tamanho={250} 
                 color={'#ffde00'} 

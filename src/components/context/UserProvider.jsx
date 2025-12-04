@@ -43,6 +43,28 @@ export function UserProvider({ children }) {
         setLoggedUser(null);
     };
     
+    const updatePassword = (email, newPassword) => {
+        const targetEmail = email || loggedUser?.email;
+        if(!targetEmail){
+            return { success: false, message: 'Nenhum usuário informado para alterar a senha.' };
+        }
+
+        const index = users.findIndex(u => u.email === targetEmail);
+        if(index === -1){
+            return { success: false, message: 'Usuário não encontrado.' };
+        }
+
+        const updatedUsers = [...users];
+        updatedUsers[index] = { ...updatedUsers[index], password: newPassword };
+        setUsers(updatedUsers);
+
+        if(loggedUser && loggedUser.email === targetEmail){
+            setLoggedUser(prev => ({ ...prev, password: newPassword }));
+        }
+
+        return { success: true, message: 'Senha alterada com sucesso.' };
+    };
+
 
     return(
         <UserContext.Provider value={{
@@ -51,6 +73,7 @@ export function UserProvider({ children }) {
             registerUser,
             loginUser,
             logoutUser,
+            updatePassword,
         }}>
             {children}
         </UserContext.Provider>

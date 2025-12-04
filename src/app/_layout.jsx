@@ -2,9 +2,11 @@ import { Ionicons } from '@expo/vector-icons';
 import { Tabs } from 'expo-router';
 import { DonationProvider } from '../components/context/DonationProvider';
 import { OngProvider } from '../components/context/OngProvider';
+import { UserProvider } from '../components/context/UserProvider';
 
 export default function Layout() {
     return(
+    <UserProvider>
     <DonationProvider>
         <OngProvider>
             <Tabs
@@ -114,5 +116,6 @@ export default function Layout() {
         </Tabs>
         </OngProvider>
     </DonationProvider>
+    </UserProvider>
     )
 }

@@ -1,9 +1,35 @@
 import { router } from "expo-router";
+import { useState } from 'react';
 import { Image, StyleSheet, Text, TextInput, View } from "react-native";
+import useUserContext from '../../components/context/useUserContext';
 import { StandartButton } from "../../components/StandartButton";
-import { Ionicons } from '@expo/vector-icons';
 
 export default function ForgotPassword(){
+
+    const { updatePassword, loggedUser } = useUserContext();
+    const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+
+    const submit = () => {
+        if(!password || !confirmPassword){
+            alert('Preencha ambos os campos de senha.');
+            return;
+        }
+        if(password !== confirmPassword){
+            alert('As senhas não coincidem.');
+            return;
+        }
+
+        const email = loggedUser?.email;
+        const result = updatePassword(email, password);
+        if(!result || !result.success){
+            alert(result?.message || 'Erro ao atualizar senha.');
+            return;
+        }
+
+        alert(result.message);
+        router.replace('login');
+    }
 
     return(
         <View style={styles.container}>
@@ -18,6 +44,9 @@ export default function ForgotPassword(){
                     placeholder="Insira aqui sua nova senha" 
                     placeholderTextColor={'#ccc'}
                     style={styles.input} 
+                    secureTextEntry={true}
+                    value={password}
+                    onChangeText={setPassword}
                 />
                 <Text style={styles.label}>REPITA A SENHA:</Text>
                 <TextInput 
@@ -25,11 +54,12 @@ export default function ForgotPassword(){
                     placeholderTextColor={'#ccc'}
                     secureTextEntry={true} 
                     style={styles.input} 
-                    
+                    value={confirmPassword}
+                    onChangeText={setConfirmPassword}
                 />
             </View>
             <StandartButton 
-                onPress={() => router.navigate('login')}
+                onPress={submit}
                 title="SALVAR"
                 tamanho={250} 
                 color={'#ffde00'} 

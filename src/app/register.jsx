@@ -8,7 +8,7 @@ import useUserContext from '../components/context/useUserContext';
 
 export default function Register(){
 
-    const { addRegister } = useUserContext();
+    const { registerUser } = useUserContext();
     
     const [user, setUser] = useState('');
     const [email, setEmail] = useState('');
@@ -30,10 +30,24 @@ export default function Register(){
                     alert('As senhas não coincidem. Por favor, tente novamente.');
                     return;
                 }
-                addRegister({ user, email, password })
+                if(!checked){
+                    alert('É necessário aceitar os termos de uso para se registrar.');
+                    return;
+                }
+
+                const result = registerUser(user, email, password);
+
+                if(!result || !result.success){
+                    alert(result?.message || 'Erro ao registrar usuário.');
+                    return;
+                }
+
+                alert(result.message);
+
                 setUser('')
                 setEmail('')
                 setPassword('')
+                setConfirmPassword('')
                 router.navigate('login')
             }
 
@@ -65,11 +79,11 @@ export default function Register(){
                 <TextInput 
                     placeholder="Insira aqui seu melhor e-mail" 
                     placeholderTextColor={'#ccc'}
-                    secureTextEntry={true} 
+                    keyboardType={'email-address'}
+                    autoCapitalize={'none'}
                     style={styles.input}
                     value={email} 
                     onChangeText={setEmail}
-                    
                 />
                 <Text style={styles.label}>SENHA:</Text>
                 <TextInput 
@@ -79,7 +93,6 @@ export default function Register(){
                     style={styles.input}
                     value={password} 
                     onChangeText={setPassword}
-                    
                 />
                 <Text style={styles.label}>CONFIRME SUA SENHA:</Text>
                 <TextInput 
@@ -103,7 +116,7 @@ export default function Register(){
                     onPress={toggleCheckbox}
                 >
                     {checked && (
-                        <Icon name="checkmark" size={16} color="#FFF" /> 
+                        <Ionicons name="checkmark" size={12} color="#FFF" /> 
                     )}
                 </Pressable>
                 <Pressable onPress={() => router.navigate('terms')}>
