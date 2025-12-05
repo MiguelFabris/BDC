@@ -30,10 +30,7 @@ export default function Register(){
                     alert('As senhas não coincidem. Por favor, tente novamente.');
                     return;
                 }
-                if(!checked){
-                    alert('É necessário aceitar os termos de uso para se registrar.');
-                    return;
-                }
+
 
                 const result = registerUser(user, email, password);
 
