@@ -10,6 +10,7 @@ export function OngProvider({ children }){
     const [ongs, setOngs] = useState([])
     const [isLoad, setIsLoad] = useState(false)
 
+    const [editingOng, setEditingOng] = useState(null)
 
     useEffect(() => {
 
@@ -72,12 +73,27 @@ export function OngProvider({ children }){
             }))
     }
 
+    const startEditOng = (ong) => setEditingOng(ong || null)
+    const clearEditingOng = () => setEditingOng(null)
+    const saveOng = (ong) => {
+        if(ong?.id){
+            updateOng(ong.id, ong)
+        } else {
+            addOngs(ong)
+        }
+        clearEditingOng()
+    }
+
     return(
         <OngContext.Provider value={{ 
             ongs,
             addOngs,
             updateOng,
-            deleteOng
+            deleteOng,
+            editingOng,
+            startEditOng,
+            clearEditingOng,
+            saveOng,
         }}>
             {children}
         </OngContext.Provider>

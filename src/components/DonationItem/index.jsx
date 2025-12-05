@@ -5,7 +5,8 @@ import { formatPhoneNumber } from '../../utilitaries/phoneMask';
 export function DonationItem({ 
             donation,
             completed,
-            onPressDelete
+            onPressDelete,
+            onPressEdit
         }){
     
     const cardStyles = [styles.card];
@@ -21,6 +22,13 @@ export function DonationItem({
                 <Text style={styles.text}>{donation?.description}</Text>
                 <Text style={styles.phone}>{formatPhoneNumber(donation?.phone || '')}</Text>
             </View>
+            {onPressEdit && (
+                <Pressable onPress={onPressEdit} style={styles.iconButton}>
+                    <Ionicons
+                        name="pencil" style={styles.icon}
+                    />
+                </Pressable>
+            )}
             <Pressable onPress={onPressDelete} style={styles.iconButton}>
                 <Ionicons
                     name="trash" style={styles.icon}

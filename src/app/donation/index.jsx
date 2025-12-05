@@ -57,7 +57,7 @@ export default function Donation(){
                             <DonationItem 
                                 donation={item}
                                 onPressDelete={() => deleteDonation(item.id)}
-                                onPressEdit={() => router.navigate(`/edit-donation/${item.id}`)}
+                                onPressEdit={() => router.push(`/edit-donation/${item.id}`)}
                         />}
                         keyExtractor={item => item.id}
                         ItemSeparatorComponent={() => <View style={{height: 8}} />}

@@ -113,6 +113,20 @@ export default function Layout() {
                 tabBarItemStyle: { display: 'none' },
             }}
         />
+        <Tabs.Screen
+            name='edit-ong/[id]'
+            options={{
+                tabBarButton: () => null,
+                tabBarItemStyle: { display: 'none' },
+            }}
+        />
+        <Tabs.Screen
+            name='edit-donation/[id]'
+            options={{
+                tabBarButton: () => null,
+                tabBarItemStyle: { display: 'none' },
+            }}
+        />
         </Tabs>
         </OngProvider>
     </DonationProvider>

@@ -1,12 +1,53 @@
-import { createContext, useState } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { createContext, useEffect, useState } from 'react';
 
 export const UserContext = createContext();
 
-export function UserProvider({ children }) {
+const STORAGE_KEYS = {
+    USERS: '@BDC:users',
+    LOGGED: '@BDC:loggedUser',
+};
 
-    //Aqui é a lista de usuários cadastrados
+export function UserProvider({ children }) {
+    
     const [users, setUsers] = useState([])
     const [loggedUser, setLoggedUser] = useState(null)
+
+    useEffect(() => {
+        const load = async () => {
+            try {
+                const usersJson = await AsyncStorage.getItem(STORAGE_KEYS.USERS);
+                const loggedJson = await AsyncStorage.getItem(STORAGE_KEYS.LOGGED);
+
+                if (usersJson) {
+                    setUsers(JSON.parse(usersJson));
+                }
+                if (loggedJson) {
+                    setLoggedUser(JSON.parse(loggedJson));
+                }
+            } catch (err) {
+                console.log('Erro ao carregar dados do armazenamento:', err);
+            }
+        }
+        load();
+    }, []);
+
+    // Persiste users e loggedUser sempre que mudarem
+    useEffect(() => {
+        const persist = async () => {
+            try {
+                await AsyncStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(users));
+                if (loggedUser) {
+                    await AsyncStorage.setItem(STORAGE_KEYS.LOGGED, JSON.stringify(loggedUser));
+                } else {
+                    await AsyncStorage.removeItem(STORAGE_KEYS.LOGGED);
+                }
+            } catch (err) {
+                console.log('Erro ao salvar dados do usuário:', err);
+            }
+        }
+        persist();
+    }, [users, loggedUser]);
 
     const registerUser = (username, email, password) => {
         console.log('Registrando usuário:', { username, email, password });

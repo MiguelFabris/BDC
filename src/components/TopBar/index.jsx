@@ -1,17 +1,29 @@
 import { Ionicons } from '@expo/vector-icons';
-import { router } from "expo-router";
-import { Pressable, StyleSheet, View } from "react-native";
+import { useRouter } from 'expo-router';
+import { Pressable, StyleSheet, View } from 'react-native';
 
 export function TopBar() {
+    const router = useRouter();
+
+    const canGoBack = typeof router.canGoBack === 'function' ? router.canGoBack() : false;
+
+    const handleBack = () => {
+        if (canGoBack) {
+            router.back();
+        }
+    };
+
     return(
         <View style={styles.container}>
-            <Pressable onPress={() => router.back()} style={styles.backButton}>
-                <Ionicons
-                    name="chevron-back"
-                    size={32}
-                    color="#fff"
-                />
-            </Pressable>
+            {canGoBack && (
+                <Pressable onPress={handleBack} style={styles.backButton}>
+                    <Ionicons
+                        name="exit-outline"
+                        size={32}
+                        color="#fff"
+                    />
+                </Pressable>
+            )}
         </View>
     )
 }
@@ -22,7 +34,7 @@ const styles = StyleSheet.create({
         height: 80,
         backgroundColor: '#0344a3',
         justifyContent: 'center',
-        alignItems: 'flex-start',
+        alignItems: 'flex-end',
         paddingTop: 15,
         paddingBottom: 15,
         paddingLeft: 10,

@@ -9,7 +9,7 @@ export function DonationProvider({ children }){
 
     const [donations, setDonations] = useState([])
     const [isLoad, setIsLoad] = useState(false)
-
+    const [editingDonation, setEditingDonation] = useState(null)
 
     useEffect(() => {
 
@@ -72,12 +72,31 @@ export function DonationProvider({ children }){
             }))
     }
 
+    const startEditDonation = (donation) => {
+        setEditingDonation(donation || null)
+    }
+
+    const clearEditingDonation = () => setEditingDonation(null)
+
+    const saveDonation = (donation) => {
+        if(donation?.id){
+            updateDonation(donation.id, donation)
+        } else {
+            addDonations(donation)
+        }
+        clearEditingDonation()
+    }
+
     return(
         <DonationContext.Provider value={{ 
             donations,
             addDonations,
             updateDonation,
-            deleteDonation
+            deleteDonation,
+            editingDonation,
+            startEditDonation,
+            clearEditingDonation,
+            saveDonation,
         }}>
             {children}
         </DonationContext.Provider>
