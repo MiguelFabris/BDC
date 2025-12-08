@@ -1,7 +1,7 @@
 import { Ionicons } from '@expo/vector-icons';
 import { router } from "expo-router";
 import { useState } from 'react';
-import { Image, Pressable, StyleSheet, Text, TextInput, View } from "react-native";
+import { Alert, Image, Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 import useUserContext from '../components/context/useUserContext';
 import { StandartButton } from "../components/StandartButton";
 
@@ -13,17 +13,17 @@ export default function Login(){
 
     const submitLogin = () => {
         if(!email || !password){
-            alert('Preencha e-mail e senha.');
+            Alert.alert('Validação', 'Preencha e-mail e senha.');
             return;
         }
 
         const result = loginUser(email, password);
         if(!result || !result.success){
-            alert(result?.message || 'Erro ao realizar login.');
+            Alert.alert(result?.title || 'Erro', result?.message || 'Erro ao realizar login.');
             return;
         }
 
-        alert(result.message);
+        Alert.alert(result?.title || 'Sucesso', result.message);
         router.replace('home');
     }
 

@@ -1,6 +1,6 @@
 import { router } from "expo-router";
 import { useState } from 'react';
-import { Image, StyleSheet, Text, TextInput, View } from "react-native";
+import { Alert, Image, StyleSheet, Text, TextInput, View } from "react-native";
 import useUserContext from '../../components/context/useUserContext';
 import { StandartButton } from "../../components/StandartButton";
 
@@ -12,22 +12,22 @@ export default function ForgotPassword(){
 
     const submit = () => {
         if(!password || !confirmPassword){
-            alert('Preencha ambos os campos de senha.');
+            Alert.alert('Validação', 'Preencha ambos os campos de senha.');
             return;
         }
         if(password !== confirmPassword){
-            alert('As senhas não coincidem.');
+            Alert.alert('Validação', 'As senhas não coincidem.');
             return;
         }
 
         const email = loggedUser?.email;
         const result = updatePassword(email, password);
         if(!result || !result.success){
-            alert(result?.message || 'Erro ao atualizar senha.');
+            Alert.alert(result?.title || 'Erro', result?.message || 'Erro ao atualizar senha.');
             return;
         }
 
-        alert(result.message);
+        Alert.alert(result?.title || 'Sucesso', result.message);
         router.replace('login');
     }
 

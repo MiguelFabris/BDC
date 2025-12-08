@@ -6,7 +6,8 @@ export function OngItem({
             ong,
             onPressEdit,
             completed,
-            onPressDelete
+            onPressDelete,
+            isOwner
         }){
     
     const cardStyles = [styles.card];
@@ -22,16 +23,20 @@ export function OngItem({
                 <Text style={styles.text}>{ong?.description}</Text>
                 <Text style={styles.phone}>{formatPhoneNumber(ong?.phone || '')}</Text>
             </View>
-            <Pressable onPress={onPressEdit} style={styles.iconButton}>
-                <Ionicons
-                    name="pencil" style={styles.icon}
-                />
-            </Pressable>
-            <Pressable onPress={onPressDelete} style={styles.iconButton}>
-                <Ionicons
-                    name="trash" style={styles.icon}
-                />
-            </Pressable>
+            {isOwner && (
+                <Pressable onPress={onPressEdit} style={styles.iconButton}>
+                    <Ionicons
+                        name="pencil" style={styles.icon}
+                    />
+                </Pressable>
+            )}
+            {isOwner && (
+                <Pressable onPress={onPressDelete} style={styles.iconButton}>
+                    <Ionicons
+                        name="trash" style={styles.icon}
+                    />
+                </Pressable>
+            )}
 
         </View>
     )
@@ -53,23 +58,24 @@ const styles = StyleSheet.create({
     text:{
         flex: 1,
         color: '#021123',
-        fontSize: 18,
-        fontWeight: 'bold'
+        fontSize: 14,
+        textAlign: 'center'
     }
     ,
     title:{
         color: '#021123',
-        fontSize: 18,
-        fontWeight: '800'
+        fontSize: 20,
+        fontWeight: 'bold'
     },
     sub:{
         color: '#021123',
         fontSize: 14,
-        fontWeight: '600'
+        fontWeight: '500',
     },
     phone:{
         color: '#021123',
-        fontSize: 14,
+        fontSize: 12,
+        textAlign: 'right'
     },
     iconButton:{
         paddingHorizontal: 8,

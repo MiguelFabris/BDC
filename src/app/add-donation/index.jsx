@@ -2,11 +2,13 @@ import { router } from "expo-router";
 import { useState } from "react";
 import { Keyboard, KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSheet, Text, TextInput, TouchableWithoutFeedback, View } from "react-native";
 import useDonationContext from "../../components/context/useDonationContext";
+import useUserContext from "../../components/context/useUserContext";
 import { formatPhoneNumber, unformatPhoneNumber } from "../../utilitaries/phoneMask";
 
 export default function AddDonation(){
 
     const { addDonations } = useDonationContext()
+    const { loggedUser } = useUserContext()
     const [title, setTitle] = useState('')
     const [donorName, setDonorName] = useState('')
     const [description, setDescription] = useState('')
@@ -16,7 +18,7 @@ export default function AddDonation(){
         if(!title || !description){ 
             return
         }
-        addDonations({ title, donorName, description, phone: unformatPhoneNumber(phone) })
+        addDonations({ title, donorName, description, phone: unformatPhoneNumber(phone), userId: loggedUser?.id })
         setTitle('')
         setDonorName('')
         setDescription('')

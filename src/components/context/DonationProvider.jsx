@@ -21,7 +21,6 @@ export function DonationProvider({ children }){
               setDonations(loadedData)
               setIsLoad(true)
             } catch (e) {
-              // error reading value
             }
             };
             getData();
@@ -33,7 +32,6 @@ export function DonationProvider({ children }){
               const jsonValue = JSON.stringify(value);
               await AsyncStorage.setItem(DONATION_STORAGE_KEY, jsonValue);
             } catch (e) {
-              // saving error
             }
           };
         if(isLoad){
@@ -47,7 +45,6 @@ export function DonationProvider({ children }){
             return [
                 ...oldState,
                 {
-                    // espera um objeto { title, donorName, description, phone }
                     ...donation,
                     id: Date.now().toString(),
                 }

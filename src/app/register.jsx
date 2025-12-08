@@ -1,7 +1,7 @@
 import { Ionicons } from '@expo/vector-icons';
 import { router } from "expo-router";
 import { useState } from 'react';
-import { Image, Pressable, StyleSheet, Text, TextInput, View } from "react-native";
+import { Alert, Image, Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 import { StandartButton } from "../components/StandartButton";
 import useUserContext from '../components/context/useUserContext';
 
@@ -23,11 +23,11 @@ export default function Register(){
         };
         const submitRegister = () => {
                 if(!user || !password || !email || !confirmPassword){ 
-                   alert('Por favor, preencha todos os campos.');
+                   Alert.alert('Validação', 'Por favor, preencha todos os campos.');
                    return;
                 }
                 if(password !== confirmPassword){
-                    alert('As senhas não coincidem. Por favor, tente novamente.');
+                    Alert.alert('Validação', 'As senhas não coincidem. Por favor, tente novamente.');
                     return;
                 }
 
@@ -35,11 +35,11 @@ export default function Register(){
                 const result = registerUser(user, email, password);
 
                 if(!result || !result.success){
-                    alert(result?.message || 'Erro ao registrar usuário.');
+                    Alert.alert(result?.title || 'Erro', result?.message || 'Erro ao registrar usuário.');
                     return;
                 }
 
-                alert(result.message);
+                Alert.alert(result?.title || 'Sucesso', result.message);
 
                 setUser('')
                 setEmail('')

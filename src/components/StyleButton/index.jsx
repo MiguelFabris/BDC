@@ -15,12 +15,14 @@ const styles =StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
-        gap: 12
+        gap: 12,
+        borderRadius: 25,
     },
     buttonText:{
         textAlign: 'center',
         color: '#fff',
         fontSize: 18,
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        textDecorationLine: 'underline',
     },
 })

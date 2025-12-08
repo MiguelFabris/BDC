@@ -2,30 +2,37 @@ import { router, useLocalSearchParams } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { Keyboard, KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSheet, Text, TextInput, TouchableWithoutFeedback, View } from 'react-native';
 import useDonationContext from '../../components/context/useDonationContext';
+import useUserContext from '../../components/context/useUserContext';
 import { formatPhoneNumber, unformatPhoneNumber } from '../../utilitaries/phoneMask';
 
 export default function EditDonation(){
     const { id } = useLocalSearchParams();
     const { donations, saveDonation } = useDonationContext();
+    const { loggedUser } = useUserContext();
 
     const [title, setTitle] = useState('');
     const [donorName, setDonorName] = useState('');
     const [description, setDescription] = useState('');
     const [phone, setPhone] = useState('');
+    const [isOwner, setIsOwner] = useState(false);
 
     useEffect(() => {
         if(!id) return;
         const item = donations.find(d => d.id === id);
-        if(!item){
-            alert('Doação não encontrada.');
-            router.back();
-            return;
+        if(item){
+            setTitle(item.title || '');
+            setDonorName(item.donorName || '');
+            setDescription(item.description || '');
+            setPhone(formatPhoneNumber(item.phone || ''));
+            
+            if(loggedUser?.id !== item.userId){
+                alert('Você não tem permissão para editar esta doação.');
+                router.back();
+                return;
+            }
+            setIsOwner(true);
         }
-        setTitle(item.title || '');
-        setDonorName(item.donorName || '');
-        setDescription(item.description || '');
-        setPhone(formatPhoneNumber(item.phone || ''));
-    }, [id, donations]);
+    }, [id, donations, loggedUser]);
 
     const handlePhoneChange = (value) => {
         setPhone(formatPhoneNumber(value));
@@ -33,7 +40,7 @@ export default function EditDonation(){
 
     const submitDonation = () => {
         if(!title || !description) return;
-        saveDonation({ id, title, donorName, description, phone: unformatPhoneNumber(phone) });
+        saveDonation({ id, title, donorName, description, phone: unformatPhoneNumber(phone), userId: loggedUser?.id });
         router.replace('donation');
     }
 

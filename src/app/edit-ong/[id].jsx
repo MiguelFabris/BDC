@@ -2,30 +2,37 @@ import { router, useLocalSearchParams } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { Keyboard, KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSheet, Text, TextInput, TouchableWithoutFeedback, View } from 'react-native';
 import useOngContext from '../../components/context/useOngContext';
+import useUserContext from '../../components/context/useUserContext';
 import { formatPhoneNumber, unformatPhoneNumber } from '../../utilitaries/phoneMask';
 
 export default function EditOng(){
     const { id } = useLocalSearchParams();
     const { ongs, saveOng } = useOngContext();
+    const { loggedUser } = useUserContext();
 
     const [title, setTitle] = useState('');
     const [responsibleName, setResponsibleName] = useState('');
     const [description, setDescription] = useState('');
     const [phone, setPhone] = useState('');
+    const [isOwner, setIsOwner] = useState(false);
 
     useEffect(() => {
         if(!id) return;
         const item = ongs.find(o => o.id === id);
-        if(!item){
-            alert('ONG não encontrada.');
-            router.back();
-            return;
+        if(item){
+            setTitle(item.title || '');
+            setResponsibleName(item.responsibleName || '');
+            setDescription(item.description || '');
+            setPhone(formatPhoneNumber(item.phone || ''));
+            
+            if(loggedUser?.id !== item.userId){
+                alert('Você não tem permissão para editar esta ONG.');
+                router.back();
+                return;
+            }
+            setIsOwner(true);
         }
-        setTitle(item.title || '');
-        setResponsibleName(item.responsibleName || '');
-        setDescription(item.description || '');
-        setPhone(formatPhoneNumber(item.phone || ''));
-    }, [id, ongs]);
+    }, [id, ongs, loggedUser]);
 
     const handlePhoneChange = (value) => {
         setPhone(formatPhoneNumber(value));
@@ -33,7 +40,7 @@ export default function EditOng(){
 
     const submitOng = () => {
         if(!title || !description) return;
-        saveOng({ id, title, responsibleName, description, phone: unformatPhoneNumber(phone) });
+        saveOng({ id, title, responsibleName, description, phone: unformatPhoneNumber(phone), userId: loggedUser?.id });
         router.replace('ong');
     }
 

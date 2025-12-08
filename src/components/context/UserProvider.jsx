@@ -32,7 +32,7 @@ export function UserProvider({ children }) {
         load();
     }, []);
 
-    // Persiste users e loggedUser sempre que mudarem
+
     useEffect(() => {
         const persist = async () => {
             try {
@@ -54,7 +54,7 @@ export function UserProvider({ children }) {
 
         const emailExists = users.some(user => user.email === email);
         if (emailExists){
-            return { success: false, message: 'E-mail já cadastrado.' };
+            return { success: false, title: 'Erro', message: 'E-mail já cadastrado.' };
         }
 
         const newUser = {
@@ -65,7 +65,7 @@ export function UserProvider({ children }) {
         };
 
         setUsers(oldState => [...oldState, newUser]);
-        return { success: true, message: 'Usuário registrado com sucesso.' };
+        return { success: true, title: 'Sucesso', message: 'Usuário registrado com sucesso.' };
     };
 
     const loginUser = (email, password) => {
@@ -73,10 +73,10 @@ export function UserProvider({ children }) {
 
         const user = users.find(user => user.email === email && user.password === password)
         if(!user){
-            return { success: false, message: 'E-mail ou senha incorretos.' };
+            return { success: false, title: 'Erro de Login', message: 'E-mail ou senha incorretos.' };
         }else{
             setLoggedUser(user);
-            return { success: true, message: 'Login realizado com sucesso.' };
+            return { success: true, title: 'Bem-vindo', message: 'Login realizado com sucesso.' };
         }
     };
 
@@ -87,12 +87,12 @@ export function UserProvider({ children }) {
     const updatePassword = (email, newPassword) => {
         const targetEmail = email || loggedUser?.email;
         if(!targetEmail){
-            return { success: false, message: 'Nenhum usuário informado para alterar a senha.' };
+            return { success: false, title: 'Erro', message: 'Nenhum usuário informado para alterar a senha.' };
         }
 
         const index = users.findIndex(u => u.email === targetEmail);
         if(index === -1){
-            return { success: false, message: 'Usuário não encontrado.' };
+            return { success: false, title: 'Erro', message: 'Usuário não encontrado.' };
         }
 
         const updatedUsers = [...users];
@@ -103,7 +103,125 @@ export function UserProvider({ children }) {
             setLoggedUser(prev => ({ ...prev, password: newPassword }));
         }
 
-        return { success: true, message: 'Senha alterada com sucesso.' };
+        return { success: true, title: 'Sucesso', message: 'Senha alterada com sucesso.' };
+    };
+
+    const updateUsername = (newUsername) => {
+        if(!loggedUser){
+            return { success: false, title: 'Erro', message: 'Nenhum usuário logado.' };
+        }
+
+        if(!newUsername || newUsername.trim() === ''){
+            return { success: false, title: 'Validação', message: 'Nome de usuário não pode ser vazio.' };
+        }
+
+        const index = users.findIndex(u => u.id === loggedUser.id);
+        if(index === -1){
+            return { success: false, title: 'Erro', message: 'Usuário não encontrado.' };
+        }
+
+        const updatedUsers = [...users];
+        updatedUsers[index] = { ...updatedUsers[index], username: newUsername };
+        setUsers(updatedUsers);
+        setLoggedUser(prev => ({ ...prev, username: newUsername }));
+
+        return { success: true, title: 'Sucesso', message: 'Nome de usuário alterado com sucesso.' };
+    };
+
+    const updateEmail = (newEmail) => {
+        if(!loggedUser){
+            return { success: false, title: 'Erro', message: 'Nenhum usuário logado.' };
+        }
+
+        if(!newEmail || newEmail.trim() === ''){
+            return { success: false, title: 'Validação', message: 'E-mail não pode ser vazio.' };
+        }
+
+        const emailExists = users.some(user => user.email === newEmail && user.id !== loggedUser.id);
+        if(emailExists){
+            return { success: false, title: 'Erro', message: 'Este e-mail já está cadastrado.' };
+        }
+
+        const index = users.findIndex(u => u.id === loggedUser.id);
+        if(index === -1){
+            return { success: false, title: 'Erro', message: 'Usuário não encontrado.' };
+        }
+
+        const updatedUsers = [...users];
+        updatedUsers[index] = { ...updatedUsers[index], email: newEmail };
+        setUsers(updatedUsers);
+        setLoggedUser(prev => ({ ...prev, email: newEmail }));
+
+        return { success: true, title: 'Sucesso', message: 'E-mail alterado com sucesso.' };
+    };
+
+    const updateUserProfile = (updates) => {
+        if(!loggedUser){
+            return { success: false, title: 'Erro', message: 'Nenhum usuário logado.' };
+        }
+
+        const { username, email } = updates;
+        let hasChanges = false;
+        const newUserData = { ...loggedUser };
+
+        if(username !== undefined && username !== loggedUser.username){
+            if(!username || username.trim() === ''){
+                return { success: false, title: 'Validação', message: 'Nome de usuário não pode ser vazio.' };
+            }
+            newUserData.username = username;
+            hasChanges = true;
+        }
+
+        if(email !== undefined && email !== loggedUser.email){
+            if(!email || email.trim() === ''){
+                return { success: false, title: 'Validação', message: 'E-mail não pode ser vazio.' };
+            }
+            
+            const emailExists = users.some(user => user.email === email && user.id !== loggedUser.id);
+            if(emailExists){
+                return { success: false, title: 'Erro', message: 'Este e-mail já está cadastrado.' };
+            }
+            newUserData.email = email;
+            hasChanges = true;
+        }
+
+        if(!hasChanges){
+            return { success: false, title: 'Aviso', message: 'Nenhuma alteração foi feita.' };
+        }
+
+        const index = users.findIndex(u => u.id === loggedUser.id);
+        if(index === -1){
+            return { success: false, title: 'Erro', message: 'Usuário não encontrado.' };
+        }
+
+        const updatedUsers = [...users];
+        updatedUsers[index] = newUserData;
+        setUsers(updatedUsers);
+        setLoggedUser(newUserData);
+
+        return { success: true, title: 'Sucesso', message: 'Perfil alterado com sucesso.' };
+    };
+
+    const updateProfilePhoto = (photoUri) => {
+        if(!loggedUser){
+            return { success: false, title: 'Erro', message: 'Nenhum usuário logado.' };
+        }
+
+        if(!photoUri){
+            return { success: false, title: 'Erro', message: 'Nenhuma imagem selecionada.' };
+        }
+
+        const index = users.findIndex(u => u.id === loggedUser.id);
+        if(index === -1){
+            return { success: false, title: 'Erro', message: 'Usuário não encontrado.' };
+        }
+
+        const updatedUsers = [...users];
+        updatedUsers[index] = { ...updatedUsers[index], profilePhoto: photoUri };
+        setUsers(updatedUsers);
+        setLoggedUser(prev => ({ ...prev, profilePhoto: photoUri }));
+
+        return { success: true, title: 'Sucesso', message: 'Foto de perfil alterada com sucesso.' };
     };
 
 
@@ -115,6 +233,10 @@ export function UserProvider({ children }) {
             loginUser,
             logoutUser,
             updatePassword,
+            updateUsername,
+            updateEmail,
+            updateUserProfile,
+            updateProfilePhoto,
         }}>
             {children}
         </UserContext.Provider>

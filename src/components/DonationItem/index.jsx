@@ -6,7 +6,8 @@ export function DonationItem({
             donation,
             completed,
             onPressDelete,
-            onPressEdit
+            onPressEdit,
+            isOwner
         }){
     
     const cardStyles = [styles.card];
@@ -22,18 +23,20 @@ export function DonationItem({
                 <Text style={styles.text}>{donation?.description}</Text>
                 <Text style={styles.phone}>{formatPhoneNumber(donation?.phone || '')}</Text>
             </View>
-            {onPressEdit && (
+            {isOwner && onPressEdit && (
                 <Pressable onPress={onPressEdit} style={styles.iconButton}>
                     <Ionicons
                         name="pencil" style={styles.icon}
                     />
                 </Pressable>
             )}
-            <Pressable onPress={onPressDelete} style={styles.iconButton}>
-                <Ionicons
-                    name="trash" style={styles.icon}
-                />
-            </Pressable>
+            {isOwner && (
+                <Pressable onPress={onPressDelete} style={styles.iconButton}>
+                    <Ionicons
+                        name="trash" style={styles.icon}
+                    />
+                </Pressable>
+            )}
 
         </View>
     )
@@ -55,20 +58,19 @@ const styles = StyleSheet.create({
     text:{
         flex: 1,
         color: '#021123',
-        fontSize: 12,
+        fontSize: 14,
         textAlign: 'center'
     }
     ,
     title:{
         color: '#021123',
-        fontSize: 18,
-        fontWeight: '800'
+        fontSize: 20,
+        fontWeight: 'bold'
     },
     sub:{
         color: '#021123',
         fontSize: 14,
-        fontWeight: 'bold',
-        marginLeft: 10
+        fontWeight: '500',
     },
     phone:{
         color: '#021123',

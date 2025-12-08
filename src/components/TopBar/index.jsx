@@ -33,11 +33,12 @@ const styles = StyleSheet.create({
         width: '100%',
         height: 80,
         backgroundColor: '#0344a3',
-        justifyContent: 'center',
-        alignItems: 'flex-end',
+        justifyContent: 'space-between',
+        alignItems: 'center',
         paddingTop: 15,
         paddingBottom: 15,
-        paddingLeft: 10,
+        paddingHorizontal: 10,
+        flexDirection: 'row',
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.3,
@@ -51,6 +52,6 @@ const styles = StyleSheet.create({
     backButton: {
         padding: 8,
         borderRadius: 20,
-        backgroundColor: 'rgba(255, 255, 255, 0.07)'
+        backgroundColor: 'rgba(255, 255, 255, 0)'
     },
 });

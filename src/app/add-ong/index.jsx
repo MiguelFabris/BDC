@@ -2,11 +2,13 @@ import { router } from "expo-router";
 import { useState } from "react";
 import { Keyboard, KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSheet, Text, TextInput, TouchableWithoutFeedback, View } from "react-native";
 import useOngContext from "../../components/context/useOngContext";
+import useUserContext from "../../components/context/useUserContext";
 import { formatPhoneNumber, unformatPhoneNumber } from "../../utilitaries/phoneMask";
 
 export default function AddOng(){
 
     const { addOngs } = useOngContext()
+    const { loggedUser } = useUserContext()
     const [title, setTitle] = useState('')
     const [responsibleName, setResponsibleName] = useState('')
     const [description, setDescription] = useState('')
@@ -16,7 +18,7 @@ export default function AddOng(){
         if(!title || !description){ 
             return
         }
-        addOngs({ title, responsibleName, description, phone: unformatPhoneNumber(phone) })
+        addOngs({ title, responsibleName, description, phone: unformatPhoneNumber(phone), userId: loggedUser?.id })
         setTitle('')
         setResponsibleName('')
         setDescription('')

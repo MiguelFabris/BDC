@@ -3,6 +3,7 @@ import { router } from "expo-router";
 import { useState } from 'react';
 import { FlatList, StyleSheet, Text, TextInput, View } from "react-native";
 import useDonationContext from "../../components/context/useDonationContext";
+import useUserContext from "../../components/context/useUserContext";
 import { DonationItem } from "../../components/DonationItem";
 import { StandartButton } from "../../components/StandartButton";
 import { TopBar } from "../../components/TopBar";
@@ -10,6 +11,7 @@ import { TopBar } from "../../components/TopBar";
 export default function Donation(){
 
     const { donations, deleteDonation } = useDonationContext();
+    const { loggedUser } = useUserContext();
     const [query, setQuery] = useState('')
 
     const filteredDonations = donations.filter(d => {
@@ -53,12 +55,17 @@ export default function Donation(){
                 <View style={styles.listContainer}>
                     <FlatList
                         data={filteredDonations}
-                        renderItem={({item}) => 
-                            <DonationItem 
-                                donation={item}
-                                onPressDelete={() => deleteDonation(item.id)}
-                                onPressEdit={() => router.push(`/edit-donation/${item.id}`)}
-                        />}
+                        renderItem={({item}) => {
+                            const isOwner = loggedUser?.id === item.userId;
+                            return (
+                                <DonationItem 
+                                    donation={item}
+                                    isOwner={isOwner}
+                                    onPressDelete={() => deleteDonation(item.id)}
+                                    onPressEdit={() => router.push(`/edit-donation/${item.id}`)}
+                                />
+                            );
+                        }}
                         keyExtractor={item => item.id}
                         ItemSeparatorComponent={() => <View style={{height: 8}} />}
                         contentContainerStyle={{ paddingBottom: 220, flexGrow: 1 }}

@@ -1,8 +1,34 @@
 import { Ionicons } from '@expo/vector-icons';
 import { Tabs } from 'expo-router';
+import { Image, StyleSheet } from 'react-native';
 import { DonationProvider } from '../components/context/DonationProvider';
 import { OngProvider } from '../components/context/OngProvider';
 import { UserProvider } from '../components/context/UserProvider';
+import useUserContext from '../components/context/useUserContext';
+
+function ProfileTabIcon({ color, size }) {
+    const { loggedUser } = useUserContext();
+
+    if (loggedUser?.profilePhoto) {
+        return (
+            <Image
+                source={{ uri: loggedUser.profilePhoto }}
+                style={[styles.profileImage, { borderColor: color }]}
+            />
+        );
+    }
+
+    return <Ionicons name="person" color={color} size={size} />;
+}
+
+const styles = StyleSheet.create({
+    profileImage: {
+        width: 28,
+        height: 28,
+        borderRadius: 14,
+        borderWidth: 2,
+    },
+});
 
 export default function Layout() {
     return(
@@ -80,7 +106,7 @@ export default function Layout() {
                 tabBarLabel: 'Perfil',
                 tabBarStyle: { backgroundColor: '#0344a3' },
                 tabBarIcon: ({ color, size }) => (
-                    <Ionicons name="person" color={color} size={size} />
+                    <ProfileTabIcon color={color} size={size} />
                 ),
             }}
         />

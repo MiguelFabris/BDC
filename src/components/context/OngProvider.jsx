@@ -22,7 +22,6 @@ export function OngProvider({ children }){
               setOngs(loadedData)
               setIsLoad(true)
             } catch (e) {
-              // error reading value
             }
             };
             getData();
@@ -34,7 +33,6 @@ export function OngProvider({ children }){
               const jsonValue = JSON.stringify(value);
               await AsyncStorage.setItem(ONG_STORAGE_KEY, jsonValue);
             } catch (e) {
-              // saving error
             }
           };
         if(isLoad){
@@ -48,7 +46,6 @@ export function OngProvider({ children }){
             return [
                 ...oldState,
                 {
-                    // espera um objeto { title, responsibleName, description, phone }
                     ...ong,
                     id: Date.now().toString(),
                 }

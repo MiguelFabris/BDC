@@ -3,6 +3,7 @@ import { router } from "expo-router";
 import { useState } from 'react';
 import { FlatList, StyleSheet, Text, TextInput, View } from "react-native";
 import useOngContext from "../../components/context/useOngContext";
+import useUserContext from "../../components/context/useUserContext";
 import { OngItem } from "../../components/OngItem";
 import { StandartButton } from "../../components/StandartButton";
 import { TopBar } from "../../components/TopBar";
@@ -10,6 +11,7 @@ import { TopBar } from "../../components/TopBar";
 export default function Ong(){
 
     const { ongs, deleteOng } = useOngContext();
+    const { loggedUser } = useUserContext();
     const [query, setQuery] = useState('')
 
     const filteredOngs = ongs.filter(o => {
@@ -53,12 +55,17 @@ export default function Ong(){
                 <View style={styles.listContainer}>
                     <FlatList
                         data={filteredOngs}
-                        renderItem={({item}) => 
-                            <OngItem 
-                                ong={item}
-                                onPressDelete={() => deleteOng(item.id)}
-                                onPressEdit={() => router.navigate(`/edit-ong/${item.id}`)}
-                        />}
+                        renderItem={({item}) => {
+                            const isOwner = loggedUser?.id === item.userId;
+                            return (
+                                <OngItem 
+                                    ong={item}
+                                    isOwner={isOwner}
+                                    onPressDelete={() => deleteOng(item.id)}
+                                    onPressEdit={() => router.navigate(`/edit-ong/${item.id}`)}
+                                />
+                            );
+                        }}
                         keyExtractor={item => item.id}
                         ItemSeparatorComponent={() => <View style={{height: 8}} />}
                         contentContainerStyle={{ paddingBottom: 220, flexGrow: 1 }}
