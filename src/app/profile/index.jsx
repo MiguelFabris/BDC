@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { Alert, Image, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
 import useUserContext from "../../components/context/useUserContext";
 import { StyleButton } from "../../components/StyleButton";
+import { StandartButton } from '../../components/StandartButton';
 import { TopBar } from "../../components/TopBar";
 
 export default function Profile() {
@@ -137,12 +138,12 @@ export default function Profile() {
                     </View>
 
                     <View style={styles.buttonContainer}>
-                        <Pressable 
-                            style={styles.saveButton}
+                        <StandartButton
                             onPress={handleSaveChanges}
-                        >
-                            <Text style={styles.saveButtonText}>SALVAR ALTERAÇÕES</Text>
-                        </Pressable>
+                            title="SALVAR ALTERAÇÕES"
+                            tamanho={250}
+                            color={'#ffdd00d7'}
+                        />
                     </View>
                 </View>
             </ScrollView>

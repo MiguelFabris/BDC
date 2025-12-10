@@ -35,15 +35,15 @@ export default function Layout() {
     <UserProvider>
     <DonationProvider>
         <OngProvider>
-            <Tabs
-            screenOptions={{
-                headerShown: false,
-                tabBarActiveTintColor: '#ffde00',
-                tabBarInactiveTintColor: '#ffffff',
-                tabBarStyle: {
-                    display: 'none',
-                },
-            }}>
+        <Tabs
+        screenOptions={{
+            headerShown: false,
+            tabBarActiveTintColor: '#ffde00',
+            tabBarInactiveTintColor: '#ffffff',
+            tabBarStyle: {
+                display: 'none',
+            },
+        }}>
         <Tabs.Screen
             name='index'
             options={{
@@ -62,6 +62,7 @@ export default function Layout() {
                 ),
             }}
         />
+
         <Tabs.Screen
             name='register'
             options={{
@@ -96,6 +97,17 @@ export default function Layout() {
                 tabBarStyle: { backgroundColor: '#0344a3' },
                 tabBarIcon: ({ color, size }) => (
                     <Ionicons name="earth-outline" color={color} size={size} />
+                ),
+            }}
+        />
+        <Tabs.Screen
+            name='info/index'
+            options={{
+                title: 'Info',
+                tabBarLabel: 'Info',
+                tabBarStyle: { backgroundColor: '#0344a3' },
+                tabBarIcon: ({ color, size }) => (
+                    <Ionicons name="information-circle-outline" color={color} size={size} />
                 ),
             }}
         />
