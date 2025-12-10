@@ -4,12 +4,14 @@ import { router } from "expo-router";
 import { useEffect, useState } from "react";
 import { Alert, Image, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
 import useUserContext from "../../components/context/useUserContext";
-import { StyleButton } from "../../components/StyleButton";
 import { StandartButton } from '../../components/StandartButton';
+import { StyleButton } from "../../components/StyleButton";
 import { TopBar } from "../../components/TopBar";
+import { useResponsiveDimensions } from "../../utilitaries/responsiveDimensions";
 
 export default function Profile() {
     const { loggedUser, updateUserProfile, updateProfilePhoto } = useUserContext();
+    const { sizes } = useResponsiveDimensions();
     const [username, setUsername] = useState(loggedUser?.username || '');
     const [email, setEmail] = useState(loggedUser?.email || '');
     const [profilePhoto, setProfilePhoto] = useState(loggedUser?.profilePhoto || null);
@@ -72,12 +74,27 @@ export default function Profile() {
         Alert.alert(result?.title || 'Sucesso', result.message);
     };
 
+    const canGoBack = typeof router.canGoBack === 'function' ? router.canGoBack() : false;
+
+    const handleBack = () => {
+        if (canGoBack) {
+            router.back();
+        }
+    };
+
     return(
         <View style={{ flex: 1 }}>
             <TopBar />
             <ScrollView contentContainerStyle={styles.scrollContainer} style={styles.scrollView}>
                 <View style={styles.container}>
-                    <Text style={styles.title}>
+                    <Pressable onPress={handleBack} style={styles.backButton}>
+                        <Ionicons
+                            name="exit-outline"
+                            size={40}
+                            color="#fff"
+                        />
+                    </Pressable>
+                    <Text style={[styles.title, { fontSize: sizes.fontSize.h1 }]}>
                         {loggedUser?.username?.toUpperCase() || 'USUÁRIO'}
                     </Text>
                     
@@ -85,26 +102,34 @@ export default function Profile() {
                         {profilePhoto ? (
                             <Image 
                                 source={{ uri: profilePhoto }}
-                                style={styles.profilePhoto}
+                                style={[styles.profilePhoto, { 
+                                    width: sizes.imageMedium * 1, 
+                                    height: sizes.imageMedium * 1,
+                                    borderRadius: sizes.imageMedium
+                                }]}
                             />
                         ) : (
                             <Ionicons
                                 name="person-circle"
-                                size={200}
+                                size={sizes.imageMedium * 1}
                                 color="#fff"
                             />
                         )}
-                        <View style={styles.photoEditIcon}>
+                        <View style={[styles.photoEditIcon, { 
+                            width: sizes.spacing.xl * 2.5,
+                            height: sizes.spacing.xl * 2.5,
+                            borderRadius: sizes.spacing.xl * 1.25
+                        }]}>
                             <Ionicons
                                 name="camera"
-                                size={24}
+                                size={sizes.iconMedium}
                                 color="#fff"
                             />
                         </View>
                     </Pressable>
 
                     <View style={styles.section}>
-                        <Text style={styles.label}>USUÁRIO:</Text>
+                        <Text style={[styles.label, { fontSize: sizes.fontSize.small }]}>USUÁRIO:</Text>
                         <TextInput 
                             placeholder="Altere aqui seu usuário" 
                             placeholderTextColor={'#ccc'}
@@ -115,11 +140,11 @@ export default function Profile() {
                     </View>
 
                     <View style={styles.section}>
-                        <Text style={styles.label}>E-MAIL:</Text>
+                        <Text style={[styles.label, { fontSize: sizes.fontSize.small }]}>E-MAIL:</Text>
                         <TextInput 
                             placeholder="Altere aqui seu e-mail" 
                             placeholderTextColor={'#ccc'}
-                            style={styles.input} 
+                            style={[styles.input, { fontSize: sizes.fontSize.body }]} 
                             value={email}
                             onChangeText={setEmail}
                             keyboardType="email-address"
@@ -128,7 +153,7 @@ export default function Profile() {
                     </View>
 
                     <View style={styles.section}>
-                        <Text style={styles.label}>SENHA:</Text>
+                        <Text style={[styles.label, { fontSize: sizes.fontSize.small }]}>SENHA:</Text>
                         <StyleButton 
                             onPress={() => router.navigate('forgot-password')}
                             title="Para alterar a senha é necessário redefini-la"
@@ -141,7 +166,7 @@ export default function Profile() {
                         <StandartButton
                             onPress={handleSaveChanges}
                             title="SALVAR ALTERAÇÕES"
-                            tamanho={250}
+                            tamanho={sizes.scale > 1 ? 300 : 250}
                             color={'#ffdd00d7'}
                         />
                     </View>
@@ -155,6 +180,13 @@ const styles = StyleSheet.create({
     scrollView: {
         flex: 1,
         backgroundColor: '#3c95fe',
+    },
+    backButton: {
+        padding: 8,
+        borderRadius: 20,
+        backgroundColor: 'rgba(255, 255, 255, 0)',
+        alignSelf: 'flex-end',
+
     },
     scrollContainer: {
         flexGrow: 1,

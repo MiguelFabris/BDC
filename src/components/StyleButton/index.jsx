@@ -1,17 +1,22 @@
-import { Pressable, StyleSheet, Text } from "react-native";
+import { Pressable, StyleSheet, Text, useWindowDimensions } from "react-native";
+import { getResponsiveSize } from "../../utilitaries/responsiveDimensions";
 
 export const StyleButton = ({ title, color, onPress, icon, tamanho }) => {
+  const { width } = useWindowDimensions();
+  const buttonWidth = tamanho || getResponsiveSize(width, 200);
+  const fontSize = getResponsiveSize(width, 18);
+  const padding = getResponsiveSize(width, 8);
+
   return (
-    <Pressable onPress={onPress} style={[styles.button, {backgroundColor: color}, {width: tamanho}]}>
+    <Pressable onPress={onPress} style={[styles.button, {backgroundColor: color, width: buttonWidth, padding: padding}]}>
         {icon}
-        <Text style={styles.buttonText}>{title}</Text>
+        <Text style={[styles.buttonText, { fontSize }]}>{title}</Text>
     </Pressable>
   );
 };
 
-const styles =StyleSheet.create({
+const styles = StyleSheet.create({
     button:{
-        padding: 8,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
@@ -21,7 +26,6 @@ const styles =StyleSheet.create({
     buttonText:{
         textAlign: 'center',
         color: '#fff',
-        fontSize: 18,
         fontWeight: 'bold',
         textDecorationLine: 'underline',
     },

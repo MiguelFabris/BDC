@@ -1,29 +1,12 @@
-import { Ionicons } from '@expo/vector-icons';
-import { useRouter } from 'expo-router';
-import { Pressable, StyleSheet, View } from 'react-native';
+import { StyleSheet, View, useWindowDimensions } from 'react-native';
+import { getResponsiveSize } from '../../utilitaries/responsiveDimensions';
 
 export function TopBar() {
-    const router = useRouter();
+    const { width } = useWindowDimensions();
 
-    const canGoBack = typeof router.canGoBack === 'function' ? router.canGoBack() : false;
-
-    const handleBack = () => {
-        if (canGoBack) {
-            router.back();
-        }
-    };
 
     return(
-        <View style={styles.container}>
-            {canGoBack && (
-                <Pressable onPress={handleBack} style={styles.backButton}>
-                    <Ionicons
-                        name="exit-outline"
-                        size={32}
-                        color="#fff"
-                    />
-                </Pressable>
-            )}
+        <View style={[styles.container, { height: getResponsiveSize(width, 80) }]}>
         </View>
     )
 }
@@ -31,7 +14,6 @@ export function TopBar() {
 const styles = StyleSheet.create({
     container: {
         width: '100%',
-        height: 80,
         backgroundColor: '#0344a3',
         justifyContent: 'space-between',
         alignItems: 'center',
@@ -46,7 +28,6 @@ const styles = StyleSheet.create({
     },
     title: {
         color: '#fff',
-        fontSize: 20,
         fontWeight: 'bold',
     },
     backButton: {

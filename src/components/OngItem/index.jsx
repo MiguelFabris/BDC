@@ -1,6 +1,7 @@
 import { Ionicons } from '@expo/vector-icons';
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import { formatPhoneNumber } from '../../utilitaries/phoneMask';
+import { useResponsiveDimensions } from '../../utilitaries/responsiveDimensions';
 
 export function OngItem({ 
             ong,
@@ -9,6 +10,7 @@ export function OngItem({
             onPressDelete,
             isOwner
         }){
+    const { sizes } = useResponsiveDimensions();
     
     const cardStyles = [styles.card];
     if (completed){
@@ -18,22 +20,22 @@ export function OngItem({
     return(
         <View style={cardStyles}>
             <View style={{flex: 1}}>
-                <Text style={styles.title}>{ong?.title}</Text>
-                <Text style={styles.sub}>{ong?.responsibleName}</Text>
-                <Text style={styles.text}>{ong?.description}</Text>
-                <Text style={styles.phone}>{formatPhoneNumber(ong?.phone || '')}</Text>
+                <Text style={[styles.title, { fontSize: sizes.fontSize.h2 }]}>{ong?.title}</Text>
+                <Text style={[styles.sub, { fontSize: sizes.fontSize.small }]}>{ong?.responsibleName}</Text>
+                <Text style={[styles.text, { fontSize: sizes.fontSize.small }]}>{ong?.description}</Text>
+                <Text style={[styles.phone, { fontSize: sizes.fontSize.tiny }]}>{formatPhoneNumber(ong?.phone || '')}</Text>
             </View>
             {isOwner && (
                 <Pressable onPress={onPressEdit} style={styles.iconButton}>
                     <Ionicons
-                        name="pencil" style={styles.icon}
+                        name="pencil" style={[styles.icon, { fontSize: sizes.iconSmall }]}
                     />
                 </Pressable>
             )}
             {isOwner && (
                 <Pressable onPress={onPressDelete} style={styles.iconButton}>
                     <Ionicons
-                        name="trash" style={styles.icon}
+                        name="trash" style={[styles.icon, { fontSize: sizes.iconSmall }]}
                     />
                 </Pressable>
             )}
@@ -58,23 +60,18 @@ const styles = StyleSheet.create({
     text:{
         flex: 1,
         color: '#021123',
-        fontSize: 14,
         textAlign: 'center'
-    }
-    ,
+    },
     title:{
         color: '#021123',
-        fontSize: 20,
         fontWeight: 'bold'
     },
     sub:{
         color: '#021123',
-        fontSize: 14,
         fontWeight: '500',
     },
     phone:{
         color: '#021123',
-        fontSize: 12,
         textAlign: 'right'
     },
     iconButton:{
@@ -82,7 +79,6 @@ const styles = StyleSheet.create({
         paddingVertical: 4,
     },
     icon:{
-        fontSize: 20,
         color: '#021123'
     },
 })

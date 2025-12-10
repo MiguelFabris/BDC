@@ -26,8 +26,6 @@ export default function EditOng(){
             setPhone(formatPhoneNumber(item.phone || ''));
             
             if(loggedUser?.id !== item.userId){
-                alert('Você não tem permissão para editar esta ONG.');
-                router.back();
                 return;
             }
             setIsOwner(true);

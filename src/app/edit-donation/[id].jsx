@@ -26,8 +26,6 @@ export default function EditDonation(){
             setPhone(formatPhoneNumber(item.phone || ''));
             
             if(loggedUser?.id !== item.userId){
-                alert('Você não tem permissão para editar esta doação.');
-                router.back();
                 return;
             }
             setIsOwner(true);

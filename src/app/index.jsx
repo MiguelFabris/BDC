@@ -1,28 +1,33 @@
 import { router } from "expo-router";
 import { Image, StyleSheet, View } from "react-native";
-
 import { Footer } from "../components/Footer";
 import { StandartButton } from "../components/StandartButton";
+import { useResponsiveDimensions } from "../utilitaries/responsiveDimensions";
 
 export default function Index(){
+    const { sizes, scale } = useResponsiveDimensions();
 
     
     return(
         <View style={styles.container}>
             <Image 
                 source={require('../assets/logo.png')} 
-                style={styles.image} 
+                style={[styles.image, { 
+                    width: sizes.imageLarge * 1.125, 
+                    height: sizes.imageLarge * 1.125,
+                    marginLeft: -10
+                }]} 
             />
             <StandartButton 
                 onPress={() => router.navigate('login')}
                 title="ENTRAR" 
-                tamanho={250}
+                tamanho={scale > 1 ? 300 : 250}
                 color={'#ffde00'} 
             />
             <StandartButton 
                 onPress={() => router.navigate('register')}
                 title="CADASTRE-SE" 
-                tamanho={250}
+                tamanho={scale > 1 ? 300 : 250}
                 color={'#ffde00'} 
             />
             <Footer />
@@ -40,13 +45,10 @@ const styles = StyleSheet.create({
         gap: 35,
     },
     title: {
-        fontSize: 24,
         fontWeight: 'bold',
         marginBottom: 20,
     },
     image: {
-        width: 450,
-        height: 450,
         marginLeft: -20,
     },
     description: {
